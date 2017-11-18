@@ -3,6 +3,9 @@ var express     = require("express"),
     bodyParser  = require("body-parser"),
     mongoose    = require("mongoose"),
     config      = require("./config"),
+    users       = require("./models/Users"),
+    businesses  = require("./models/Businesses"),
+    reviews     = require("./models/Reviews"), 
     app         = express();
 
 var indico = require('indico.io');
@@ -31,39 +34,17 @@ indico.emotion("The food in this restaurant sucks. I would never come back.")
   .catch(logError);
 */
 
-
-var users = mongoose.model('users', {name: String, user_id: String}); 
-
 app.get('/users', function(req, res){
     mongoose.model('users').find(function (err, users) {
         res.send(users);
 }); 
 });
 
-var businesses = mongoose.model('businesses', {
-    business_id: String,
-    full_address: String,
-    open: Boolean,
-    categories: [String],
-    city: String,
-    name: String,
-    neighborhoods: [String],
-    state: String,
-    stars: Number,
-    type: String});
 
 app.get('/businesses', function(req, res){
     mongoose.model('businesses').find(function (err, businesses) {
         res.send(businesses); 
     });
-});
-
-var reviews = mongoose.model('reviews', {
-    user_id: String,
-    review_id: String ,
-    stars: Number,
-    text: String,
-    business_id: String
 });
 
 app.get('/reviews', function(req, res){
