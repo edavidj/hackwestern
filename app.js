@@ -69,13 +69,13 @@ app.use(function(req,res,next){
 app.get("/", function(req,res){
     res.render("landing");
 });
-app.get("/search", function(req,res){
-    users.findOne({name:req.body.username}, function(err, user){
+app.post("/search", function(req,res){
+    users.find({name: req.body.username}, function(err, user){
         if(err){
             console.log(err);
             return;
         }
-        res.render("account", {user: user});
+        res.render("account", {user: user[0]});
     })
 });
 //======= USER ROUTES =========
