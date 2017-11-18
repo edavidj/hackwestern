@@ -22,7 +22,7 @@ mongoose.connect(config.db, {useMongoClient:true});
 mongoose.model('users', {name: String, user_id: String}); 
 
 app.get('/users', function(req, res){
-    mongoose.mongoose('users').find(function (err, users) {
+    mongoose.model('users').find(function (err, users) {
         res.send(users);
 }); 
 });
