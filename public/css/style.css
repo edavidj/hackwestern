@@ -1,5 +1,8 @@
-.content-body{
+.main.container{
     margin-top:7.0em !important;
+}
+.ui.message{
+    margin-bottom: 2.0em !important;
 }
 body{
     background-color: #f5e6e6;

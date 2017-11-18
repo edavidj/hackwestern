@@ -8,7 +8,8 @@ var express     = require("express"),
     User        = require("./models/User"),
     users       = require("./models/Users"),
     businesses  = require("./models/Businesses"),
-    reviews     = require("./models/Reviews"), 
+    reviews     = require("./models/Reviews"),
+    flash       = require("connect-flash"), 
     app         = express();
 
 //var indico = require('indico.io');
@@ -43,7 +44,7 @@ app.get('/reviews', function(req, res){
         res.send(reviews); 
     });
 });
-
+app.use(flash());
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true})); //parse form and query variables better
 app.set("view engine", "ejs");
@@ -60,6 +61,8 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use(function(req,res,next){
     res.locals.user = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });   
 //for ref to front end files /<folder>/<file>
@@ -74,10 +77,11 @@ app.get("/login", function(req,res){
 app.post("/login", passport.authenticate("local", {
     // successRedirect: "/user/",
     // successFlash: "Welcome back!",
-    failureRedirect: "/login"
-    // failureFlash: "Incorrect login credentials."
+    failureRedirect: "/login",
+    failureFlash: "Incorrect login credentials."
 }), function(req,res){
     //do nothing for now
+    req.flash("success", "Welcome back, "+req.user.username);
     res.redirect("/user/"+req.user.username);
 });
 app.get("/register", function(req,res){
@@ -87,12 +91,12 @@ app.post("/register", function(req,res){
     var newUser = new User({username: req.body.username});
     User.register(newUser, req.body.password, function(err, user){
         if(err){
-            // req.flash("error", err.message); TODO: add flash msgs once this works
+            req.flash("error", err.message); 
             res.redirect("back");
             return;
         }
         passport.authenticate("local")(req,res,function(){
-            // req.flash("success", "Welcome to my blog "+user.username);
+            req.flash("success", "Welcome, "+user.username);
             console.log("Success");
             res.redirect("/");
         });
@@ -103,11 +107,18 @@ app.get("/logout", function(req,res){
     res.redirect("/");
 });
 //======= USER ROUTES =========
-app.get("/user/:id", function(req,res){
+app.get("/user/:id", isLoggedIn, function(req,res){
     //render user page here
     res.render("account"); 
 });
-
+//====== MIDDLEWARE ====== 
+function isLoggedIn(req,res,next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    req.flash("error", "You need to be logged in to do that!");
+    res.redirect("/login");
+}
 app.listen(3000, function(err){
     if(err) throw err;
     console.log("Connected to server.");    

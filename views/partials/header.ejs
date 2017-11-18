@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- semantic ui ref + jquery -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.css" rel="stylesheet" type="text/css"/>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <script
     src="https://code.jquery.com/jquery-3.1.1.min.js"
     integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
     crossorigin="anonymous"></script>
+    <!-- semantic ui ref + jquery -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <script src="/js/main.js"></script>
+    
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.js"></script>
     <title>EatMode.js</title>
 </head>
@@ -27,5 +29,19 @@
             <% } else { %>
             <a href="/logout" class="item"><i class="small icon sign out"></i>Logout</a>
             <% } %>
-        </div>                  
+        </div> 
+                        
     </div>
+    <div class="ui content-body container main">
+        <% if(error && error.length > 0) { %>
+            <div class="ui negative message">
+                <i class="close icon"></i>
+                <%=error%>
+            </div>
+        <% } else if (success && success.length > 0){ %>
+            <div class="ui positive message">
+                <i class="close icon"></i>
+                <%=success%>
+            </div>
+        <% } %>
+    </div> 
