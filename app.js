@@ -19,7 +19,7 @@ mongoose.connect(config.db, {useMongoClient:true});
 //     console.log("Success");
 // })
 
-var users = mongoose.model('users', {name: String, user_id: ObjectId}); 
+var users = mongoose.model('users', {name: String, user_id: String}); 
 
 app.get('/users', function(req, res){
     mongoose.model('users').find(function (err, users) {
