@@ -72,9 +72,9 @@ app.get("/", function(req,res){
 });
 app.post("/search", function(req,res){
     users.find({name: req.body.username}, function(err, user){
-        if(err || user === null){
+        if(err || user[0] === null || user.length === 0){
             console.log(err);
-            return;
+            res.redirect("/");
         }
 
         userObj = user[0]; //test
