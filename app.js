@@ -27,6 +27,23 @@ app.get('/users', function(req, res){
 }); 
 });
 
+var businesses = mongoose.model('businesses', {
+    business_id: String,
+    full_address: String,
+    open: Boolean,
+    categories: [String],
+    city: String,
+    name: String,
+    neighborhoods: [String],
+    state: String,
+    stars: Number,
+    type: String});
+
+app.get('/businesses', function(req, res){
+    mongoose.model('businesses').find(function (err, users) {
+        res.send(users); 
+    });
+});
 
 
 app.use(express.static(__dirname + '/public'));
