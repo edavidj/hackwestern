@@ -64,9 +64,11 @@ app.get("/", function(req,res){
     res.render("landing");
 });
 app.get("/search", function(req,res){
-    users.findById(req.body.username, function(err, user){
-        if(err) throw err;
-        console.log(user);
+    users.findOne({name:req.body.username}, function(err, user){
+        if(err){
+            console.log(err);
+            return;
+        }
         res.render("account", {user: user});
     })
 });
