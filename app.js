@@ -8,11 +8,11 @@ var express     = require("express"),
     reviews     = require("./models/Reviews"), 
     app         = express();
 
-var indico = require('indico.io');
-indico.apiKey =  '45f6807fe76a898415348e045a2d9c49';
+//var indico = require('indico.io');
+//indico.apiKey =  '45f6807fe76a898415348e045a2d9c49';
 
-var response = function(res) { console.log(res); }
-var logError = function(err) { console.log(err); }
+//var response = function(res) { console.log(res); }
+//var logError = function(err) { console.log(err); }
 
 mongoose.connect(config.db, {useMongoClient:true});
 
