@@ -72,7 +72,7 @@ app.get("/", function(req,res){
 });
 app.post("/search", function(req,res){
     users.find({name: req.body.username}, function(err, user){
-        if(err){
+        if(err || user === null){
             console.log(err);
             return;
         }
