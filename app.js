@@ -5,13 +5,10 @@ var express     = require("express"),
     passport    = require("passport"),
     localStrategy = require("passport-local"),
     config      = require("./config"),
-<<<<<<< HEAD
     User        = require("./models/User"),
-=======
     users       = require("./models/Users"),
     businesses  = require("./models/Businesses"),
     reviews     = require("./models/Reviews"), 
->>>>>>> 72f0d8b1e581ed916cf11d825fb518f78390c977
     app         = express();
 
 //var indico = require('indico.io');
