@@ -2,10 +2,16 @@ var express     = require("express"),
     path        = require("path"),
     bodyParser  = require("body-parser"),
     mongoose    = require("mongoose"),
+    passport    = require("passport"),
+    localStrategy = require("passport-local"),
     config      = require("./config"),
+<<<<<<< HEAD
+    User        = require("./models/User"),
+=======
     users       = require("./models/Users"),
     businesses  = require("./models/Businesses"),
     reviews     = require("./models/Reviews"), 
+>>>>>>> 72f0d8b1e581ed916cf11d825fb518f78390c977
     app         = express();
 
 //var indico = require('indico.io');
@@ -15,7 +21,7 @@ var express     = require("express"),
 //var logError = function(err) { console.log(err); }
 
 mongoose.connect(config.db, {useMongoClient:true});
-
+// ==== mongo example ====
 // var testSchema = mongoose.Schema({ //define schema properties
 //     text: String
 // });
@@ -56,17 +62,57 @@ app.get('/reviews', function(req, res){
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true})); //parse form and query variables better
 app.set("view engine", "ejs");
+// ========= PASSPORT INIT ============
+app.use(require("express-session")({
+    secret: "i want chips",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session()); 
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+app.use(function(req,res,next){
+    res.locals.user = req.user;
+    next();
+});   
 //for ref to front end files /<folder>/<file>
 //RENDER ROUTES
 app.get("/", function(req,res){
     res.render("landing");
 });
+//======= AUTH ========
 app.get("/login", function(req,res){
-    //login page here
+    res.render("login");
+});
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/",
+    // successFlash: "Welcome back!",
+    failureRedirect: "/login"
+    // failureFlash: "Incorrect login credentials."
+}), function(req,res){
+    //do nothing for now
 });
 app.get("/register", function(req,res){
-    //register here
+    res.render("register");
 });
+app.post("/register", function(req,res){
+    var newUser = new User({username: req.body.username});
+    User.register(newUser, req.body.password, function(err, user){
+        if(err){
+            // req.flash("error", err.message); TODO: add flash msgs once this works
+            res.redirect("back");
+            return;
+        }
+        passport.authenticate("local")(req,res,function(){
+            // req.flash("success", "Welcome to my blog "+user.username);
+            console.log("Success");
+            res.redirect("/");
+        });
+    });
+});
+//======= USER ROUTES =========
 app.get("/account/:id", function(req,res){
     //render user page here
 });
