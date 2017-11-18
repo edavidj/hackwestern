@@ -70,13 +70,14 @@ app.get("/", function(req,res){
     res.render("landing");
 });
 app.post("/search", function(req,res){
-    users.find({name: req.body.username}, function(err, user){ 
+    users.find({name: req.body.username}, function(err, user){
         if(err){
             console.log(err);
             return;
         }
+        user = user[0];
         res.render("account", {user: user[0]});
-    })
+    });
 });
 //======= USER ROUTES =========
 app.get("/user/:id", isLoggedIn, function(req,res){
