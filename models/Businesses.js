@@ -11,7 +11,6 @@ var businessSchema = mongoose.Schema({
     state: String,
     stars: Number,
     type: String
-    }
 });
 
 module.exports = mongoose.model("businesses", businessSchema);
