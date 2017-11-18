@@ -5,8 +5,20 @@ var express     = require("express"),
     passport    = require("passport"),
     localStrategy = require("passport-local"),
     config      = require("./config"),
+<<<<<<< HEAD
     User        = require("./models/User"),
+=======
+    users       = require("./models/Users"),
+    businesses  = require("./models/Businesses"),
+    reviews     = require("./models/Reviews"), 
+>>>>>>> 72f0d8b1e581ed916cf11d825fb518f78390c977
     app         = express();
+
+var indico = require('indico.io');
+indico.apiKey =  '45f6807fe76a898415348e045a2d9c49';
+
+var response = function(res) { console.log(res); }
+var logError = function(err) { console.log(err); }
 
 mongoose.connect(config.db, {useMongoClient:true});
 // ==== mongo example ====
@@ -21,6 +33,32 @@ mongoose.connect(config.db, {useMongoClient:true});
 //     if(err) throw err;
 //     console.log("Success");
 // })
+
+/* single example
+indico.emotion("The food in this restaurant sucks. I would never come back.")
+  .then(response)
+  .catch(logError);
+*/
+
+app.get('/users', function(req, res){
+    mongoose.model('users').find(function (err, users) {
+        res.send(users);
+}); 
+});
+
+
+app.get('/businesses', function(req, res){
+    mongoose.model('businesses').find(function (err, businesses) {
+        res.send(businesses); 
+    });
+});
+
+app.get('/reviews', function(req, res){
+    mongoose.model('reviews').find(function (err, reviews) {
+        res.send(reviews); 
+    });
+});
+
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true})); //parse form and query variables better
 app.set("view engine", "ejs");
