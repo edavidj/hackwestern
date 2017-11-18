@@ -4,7 +4,7 @@
   "description": "A web application that recommends restaurants towards a user using machine learning and personality sentimental analysis",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "'",
     "start": "node app.js"
   },
   "author": "Ethan Johnston, Jieni Hou, & Chelsea Xu",

@@ -76,11 +76,6 @@ app.post("/search", function(req,res){
             console.log(err);
             return;
         }
-<<<<<<< HEAD
-        user = user[0];
-        res.render("account", {user: user[0]});
-    });
-=======
 
         userObj = user[0]; 
         //queries here 
@@ -102,7 +97,6 @@ app.post("/search", function(req,res){
 ); 
         res.render("account", {user: userObj});
     })
->>>>>>> 5501a60bd148998eead10866326952ba02b22070
 });
 //======= USER ROUTES =========
 app.get("/user/:id", isLoggedIn, function(req,res){
@@ -117,7 +111,7 @@ function isLoggedIn(req,res,next){
     req.flash("error", "You need to be logged in to do that!");
     res.redirect("/login");
 }
-app.listen(3000, function(err){
+app.listen(process.env.PORT, function(err){
     if(err) throw err;
     console.log("Connected to server.");    
 });
