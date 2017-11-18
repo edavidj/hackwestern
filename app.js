@@ -71,6 +71,7 @@ app.get("/", function(req,res){
     res.render("landing");
 });
 app.post("/search", function(req,res){
+    try{
     users.find({name: req.body.username}, function(err, user){
         if(err || user[0] === undefined || user.length === 0){
             console.log(err);
@@ -92,11 +93,14 @@ app.post("/search", function(req,res){
             .then(response)
             .catch(logError);
 
-        });
-    }
-); 
+            });
+        }
+    ); 
         res.render("account", {user: userObj});
     })
+    } catch(err){
+        res.redirect("/");
+    }
 });
 //======= USER ROUTES =========
 app.get("/user/:id", isLoggedIn, function(req,res){
