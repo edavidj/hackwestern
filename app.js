@@ -11,19 +11,25 @@ var express     = require("express"),
     flash       = require("connect-flash"), 
     app         = express();
 
-//var indico = require('indico.io');
-//indico.apiKey =  '45f6807fe76a898415348e045a2d9c49';
-
-//var response = function(res) { console.log(res); }
-//var logError = function(err) { console.log(err); }
-
+// Indico API
+var indico = require('indico.io');
+indico.apiKey =  '45f6807fe76a898415348e045a2d9c49';
 mongoose.connect(config.db, {useMongoClient:true});
 
-/* single example
-indico.emotion("The food in this restaurant sucks. I would never come back.")
+var valueArray = [];
+var highest; 
+var response = function(res) { valueArray =[res.openness, res.extraversion, res.agreeableness, res.conscientiousness]; 
+               valueArray = valueArray.sort(); 
+               highest = valueArray[3];
+               console.log(highest); }
+var logError = function(err) { console.log(err); }
+
+// single example
+indico.personality("The food in this restaurant sucks. I would never come back.")
   .then(response)
   .catch(logError);
-*/
+
+mongoose.connect(config.db, {useMongoClient:true});
 
 app.get('/users', function(req, res){
     mongoose.model('users').find(function (err, users) {
