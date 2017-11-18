@@ -77,7 +77,7 @@ app.post("/search", function(req,res){
             return;
         }
 
-        userObj = user[0]; 
+        userObj = user[0]; //test
         //queries here 
 
 
