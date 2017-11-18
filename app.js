@@ -25,8 +25,8 @@ app.get('/users', function(req, res){
     mongoose.mongoose('users').find(function (err, users) {
         res.send(users);
 }); 
+});
 
-    
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true})); //parse form and query variables better
 app.set("view engine", "ejs");
