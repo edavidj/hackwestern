@@ -5,13 +5,10 @@ var express     = require("express"),
     passport    = require("passport"),
     localStrategy = require("passport-local"),
     config      = require("./config"),
-<<<<<<< HEAD
     User        = require("./models/User"),
-=======
     users       = require("./models/Users"),
     businesses  = require("./models/Businesses"),
     reviews     = require("./models/Reviews"), 
->>>>>>> 72f0d8b1e581ed916cf11d825fb518f78390c977
     app         = express();
 
 var indico = require('indico.io');
@@ -21,18 +18,6 @@ var response = function(res) { console.log(res); }
 var logError = function(err) { console.log(err); }
 
 mongoose.connect(config.db, {useMongoClient:true});
-// ==== mongo example ====
-// var testSchema = mongoose.Schema({ //define schema properties
-//     text: String
-// });
-// var Test = mongoose.model("Test", testSchema); //create model
-
-// Test.create({ //example use case
-//     test: "test"
-// }, function(err, test){
-//     if(err) throw err;
-//     console.log("Success");
-// })
 
 /* single example
 indico.emotion("The food in this restaurant sucks. I would never come back.")
@@ -87,12 +72,13 @@ app.get("/login", function(req,res){
     res.render("login");
 });
 app.post("/login", passport.authenticate("local", {
-    successRedirect: "/",
+    // successRedirect: "/user/",
     // successFlash: "Welcome back!",
     failureRedirect: "/login"
     // failureFlash: "Incorrect login credentials."
 }), function(req,res){
     //do nothing for now
+    res.redirect("/user/"+req.user.username);
 });
 app.get("/register", function(req,res){
     res.render("register");
@@ -112,9 +98,14 @@ app.post("/register", function(req,res){
         });
     });
 });
+app.get("/logout", function(req,res){
+    req.logout();
+    res.redirect("/");
+});
 //======= USER ROUTES =========
-app.get("/account/:id", function(req,res){
+app.get("/user/:id", function(req,res){
     //render user page here
+    res.render("account"); 
 });
 
 app.listen(3000, function(err){
