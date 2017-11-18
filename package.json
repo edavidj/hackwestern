@@ -1,12 +1,12 @@
 {
-  "name": "hackwestern",
+  "name": "Eatmotion",
   "version": "1.0.0",
-  "description": "Hack for hack western",
+  "description": "A web application that recommends restaurants towards a user using machine learning and personality sentimental analysis",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
-  "author": "Ethan Johnston",
+  "author": "Ethan Johnston, Jieni Hou, & Chelsea Xu",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.2",
