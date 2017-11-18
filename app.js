@@ -40,11 +40,24 @@ var businesses = mongoose.model('businesses', {
     type: String});
 
 app.get('/businesses', function(req, res){
-    mongoose.model('businesses').find(function (err, users) {
-        res.send(users); 
+    mongoose.model('businesses').find(function (err, businesses) {
+        res.send(businesses); 
     });
 });
 
+var reviews = mongoose.model('reviews', {
+    user_id: String,
+    review_id: String ,
+    stars: Number,
+    text: String,
+    business_id: String
+});
+
+app.get('/reviews', function(req, res){
+    mongoose.model('reviews').find(function (err, reviews) {
+        res.send(reviews); 
+    });
+});
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true})); //parse form and query variables better
