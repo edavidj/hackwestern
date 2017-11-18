@@ -6,7 +6,6 @@ var reviewSchema = mongoose.Schema({
     stars: Number,
     text: String,
     business_id: String
-    }
 });
 
 module.exports = mongoose.model("reviews", reviewSchema);
