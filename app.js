@@ -5,6 +5,12 @@ var express     = require("express"),
     config      = require("./config"),
     app         = express();
 
+var indico = require('indico.io');
+indico.apiKey =  '45f6807fe76a898415348e045a2d9c49';
+
+var response = function(res) { console.log(res); }
+var logError = function(err) { console.log(err); }
+
 mongoose.connect(config.db, {useMongoClient:true});
 
 // var testSchema = mongoose.Schema({ //define schema properties
@@ -18,6 +24,13 @@ mongoose.connect(config.db, {useMongoClient:true});
 //     if(err) throw err;
 //     console.log("Success");
 // })
+
+/* single example
+indico.emotion("The food in this restaurant sucks. I would never come back.")
+  .then(response)
+  .catch(logError);
+*/
+
 
 var users = mongoose.model('users', {name: String, user_id: String}); 
 
