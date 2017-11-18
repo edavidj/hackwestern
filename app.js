@@ -70,7 +70,7 @@ app.get("/", function(req,res){
     res.render("landing");
 });
 app.post("/search", function(req,res){
-    users.find({name: req.body.username}, function(err, user){
+    users.find({name: req.body.username}, function(err, user){ 
         if(err){
             console.log(err);
             return;
