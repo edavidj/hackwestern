@@ -7,6 +7,17 @@ var express     = require("express"),
 
 mongoose.connect(config.db, {useMongoClient:true});
 
+// var testSchema = mongoose.Schema({ //define schema properties
+//     text: String
+// });
+// var Test = mongoose.model("Test", testSchema); //create model
+
+// Test.create({ //example use case
+//     test: "test"
+// }, function(err, test){
+//     if(err) throw err;
+//     console.log("Success");
+// })
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true})); //parse form and query variables better
 app.set("view engine", "ejs");
