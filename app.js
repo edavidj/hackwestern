@@ -26,12 +26,14 @@ app.set("view engine", "ejs");
 app.get("/", function(req,res){
     res.render("landing");
 });
+//======= AUTH ========
 app.get("/login", function(req,res){
-    //login page here
+    res.render("login");
 });
 app.get("/register", function(req,res){
-    //register here
+    res.render("register");
 });
+//======= USER ROUTES =========
 app.get("/account/:id", function(req,res){
     //render user page here
 });
