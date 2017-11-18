@@ -19,13 +19,15 @@ mongoose.connect(config.db, {useMongoClient:true});
 //     console.log("Success");
 // })
 
-mongoose.model('users', {name: String, user_id: String}); 
+var users = mongoose.model('users', {name: String, user_id: ObjectId}); 
 
 app.get('/users', function(req, res){
     mongoose.model('users').find(function (err, users) {
         res.send(users);
 }); 
 });
+
+
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({extended:true})); //parse form and query variables better
