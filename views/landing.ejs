@@ -16,10 +16,20 @@
     <body> 
     <div class="container" id=landing-header>
         <h1>Welcome to EatMotion!</h1>
-        <a class="ui button brown" href="/login">Log in</a>
-        <a class="ui button brown" href="/register">Register</a>
+        <!-- <a class="ui button brown" href="/login">Log in</a>
+        <a class="ui button brown" href="/register">Register</a> -->
+        <form action="/search" method="GET" class="ui form container" id="userSearch">
+            <div class="field">
+                <div class="ui icon input">
+                    <input type="text" id="searchBar" name="username" placeholder="Enter a username...">
+                    <i class="search icon"></i>
+                </div>                
+            </div>            
+        </form>
     </div>
     <ul class="slideshow">
+      <li></li>
+      <li></li>
       <li></li>
       <li></li>
       <li></li>

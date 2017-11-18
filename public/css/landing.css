@@ -9,10 +9,10 @@ body {
 }
 #landing-header h1 {
     color: white;
-    text-shadow: 2px 1px 2px #555;
+    text-shadow: 2px 1px 2px rgb(41, 41, 41);
 }
-#landing-header a{
-    box-shadow: 2px 1px 2px #555;
+#landing-header input{
+    box-shadow: 2px 1px 2px rgb(41, 41, 41);
 }
 .slideshow{
     position: fixed;
@@ -39,22 +39,37 @@ body {
     animation: imageAnimation 50s linear infinite;
 }
 .slideshow li:nth-child(1) { 
-    background-image: url(https://i.imgur.com/amHEPM9.jpg) 
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5)
+      ), url(https://i.imgur.com/amHEPM9.jpg) 
 }
 .slideshow li:nth-child(2) { 
-    background-image: url(https://i.imgur.com/wmP226l.jpg);
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5)
+      ), url(https://i.imgur.com/wmP226l.jpg);
     animation-delay: 10s; 
 }
 .slideshow li:nth-child(3) { 
-    background-image: url(https://i.imgur.com/tTXGbEN.jpg);
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5)
+      ), url(https://i.imgur.com/tTXGbEN.jpg);
     animation-delay: 20s; 
 }
 .slideshow li:nth-child(4) { 
-    background-image: url(https://i.imgur.com/amHEPM9.jpg);
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5)
+      ), url(https://i.imgur.com/amHEPM9.jpg);
     animation-delay: 30s;
 }
 .slideshow li:nth-child(5) { 
-    background-image: url(https://i.imgur.com/wmP226l.jpg);
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.5),
+        rgba(0, 0, 0, 0.5)
+      ), url(https://i.imgur.com/wmP226l.jpg);
     animation-delay: 40s; 
 }
 @keyframes imageAnimation { 
