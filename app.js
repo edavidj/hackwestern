@@ -133,8 +133,29 @@ app.post("/search", function(req,res){
 
 
         //find review_ids of each userId
-        
-        
+        documents.forEach(function(value){
+            console.log(value.user_id); 
+            console.log(value.name); 
+
+            mongoose.connection.db.collection("reviews").find({'user_id': value.user_id}).toArray((err, documents) => {
+                    
+                    documents.forEach(function(value){
+                        console.log(value.business_id);
+                        console.log(value.text); 
+
+                        mongoose.connection.db.collection("businesses").find({'business_id': value.business_id}).toArray((err, documents) => {
+
+                                documents.forEach(function(value){
+                                    console.log(value.name); 
+                                });
+                        });
+
+                    });
+
+   });
+
+        });
+
 
 }
 ); 
