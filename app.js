@@ -98,7 +98,12 @@ app.get("/user/:username", function (req, res) {
             res.redirect("back");
             return;
         }
-        userObj = user[0]; 
+
+        userObj = user[0]; //test
+        
+        //queries here 
+
+        // res.render("account", {user: userObj});
         reviews.find({user_id: userObj.user_id}, function(err, userReviews){ //should be a array len = 1
             var reviewText = userReviews[0].text;
             var userPersonality;
@@ -128,11 +133,17 @@ app.get("/user/:username", function (req, res) {
                     }
                     businesses.find({business_id:{$in:filtered}}, function(err, suggestions){
                         if(err) throw err;
+                        var filtered = [];
+                        for(var i in suggestions){
+                            filtered.push
+                        }
+                        console.log(suggestions);
                         res.render("account", { user: userObj, reviews: userReviews, suggestions: suggestions});
                     });
                 });
             });
-        });       
+        });
+            
     });
 });
 app.post("/search", function (req, res) {
