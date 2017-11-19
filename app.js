@@ -16,12 +16,20 @@ var indico = require('indico.io');
 indico.apiKey =  '45f6807fe76a898415348e045a2d9c49';
 mongoose.connect(config.db, {useMongoClient:true});
 
-var valueArray = [];
-var highest; 
-var response = function(res) { valueArray =[res.openness, res.extraversion, res.agreeableness, res.conscientiousness]; 
-               valueArray = valueArray.sort(); 
-               highest = valueArray[3];
-               console.log(highest); }
+var highest;
+var keys;
+var personality;
+var valueHash;
+var response = function(res) {  // valueArray =[res.openness, res.extraversion, res.agreeableness, res.conscientiousness]; 
+               valueHash = {"openness": res.openness, "extraversion": res.extraversion, "agreeableness": res.agreeableness, "conscientiousness": res.conscientiousness};
+               keys = Object.keys(valueHash).sort().reverse().forEach(function(v,i){
+                    personality = v;
+                    highest = valueHash[v];
+                    console.log(personality);
+                    console.log(highest);
+                    return;
+               })
+            };
 var logError = function(err) { console.log(err); }
 
 //declaring variables for queries 
