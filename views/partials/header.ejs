@@ -23,10 +23,18 @@
             <!-- since it is a one page app atm this links no where -->
             <a href="/" class="header item"><i class="spoon icon"></i> EatMotion</a>
             <div class="item">
-                    <div class="ui icon input">
-                      <input type="text" placeholder="Search...">
+                    <form action="/search" method="POST" class="ui form container" id="headerForm">
+                        <div class="field">
+                            <div class="ui icon input">
+                                <input type="text" autocomplete="off" name="username" placeholder="Enter a username...">
+                                <i class="search icon"></i>
+                            </div>                
+                        </div>            
+                    </form>
+                    <!-- <div class="ui icon input">
+                      <input id="headerSearch" type="text" placeholder="Search...">
                       <i class="search link icon"></i>
-                    </div>
+                    </div> -->
                   </div>
         </div>
                         

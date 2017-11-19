@@ -6,4 +6,16 @@ $(document).ready(function(){
         .transition('fade')
     ;
     });
+    $("#headerSearch").on("keydown", function(e){
+        // if(e.which === 13){
+        //     window.location.href("")
+        //     $.ajax({
+        //         type:"POST",
+        //         url:"/search",
+        //         data:{
+        //             username: $("#headerSearch").val()
+        //         }
+        //     }); 
+        // }
+    }); 
 });

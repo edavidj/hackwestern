@@ -70,9 +70,9 @@ app.use(function(req,res,next){
 app.get("/", function(req,res){
     res.render("landing");
 });
-app.post("/search", function(req,res){
-    users.find({name: req.body.username}, function(err, user){
-        console.log("Greeting");    
+app.get("/user/:username", function(req,res){
+
+    users.find({name: req.params.username}, function(err, user){
         if(err || user[0] === undefined || user.length === 0){
             res.redirect("back");
             return;
@@ -94,9 +94,14 @@ app.post("/search", function(req,res){
 
                 });
             }
-        ); 
+        );       
+        console.log(userObj);  
         res.render("account", {user: userObj});
-    })
+    });
+});
+app.post("/search", function(req,res){
+    console.log(req.body.username)
+    res.redirect("/user/"+req.body.username);
 });
 //======= USER ROUTES =========
 app.get("/user/:id", isLoggedIn, function(req,res){
