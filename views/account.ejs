@@ -1,17 +1,36 @@
 <% include ./partials/header %>
 <div class="ui content-body text container">
-        <div class="ui huge header">Welcome <em><%=user.name%></em></div>
+        <div class="ui huge header">Showing info for <em><%=user.name%></em></div>
         <div class="ui grid stackable two column">
                 <div class="column ten wide">
                     <div class="ui header">Reviews</div>
                     <div class="ui segment divided items">
-                        
+                        <% reviews.forEach(function(review){ %>
+                        <div class="item">
+                            <div class="content">
+                                <div class="header"><%=review.business%></div>
+                                <div class="meta"><%=review.stars%> Stars</div>
+                                <div class="description"><%=review.text%></div>
+                            </div>                            
+                        </div>
+                        <% }); %>
                     </div>
                 </div> 
                 <div class="column six wide">
                     <div class="ui header">Recommendations</div>
                     <div class="ui segment divided items">
-
+                        <% suggestions.forEach(function(suggestion){ %>
+                        <div class="item">
+                            <div class="content">
+                                <div class="header"><%=suggestion.name%></div>
+                                <div class="meta">Tags: <% suggestion.categories.forEach(function(item){ %>
+                                    <%=item%> 
+                                    <% }); %>
+                                </div>
+                                <div class="description">City: <%=suggestion.city%></div>
+                            </div>
+                        </div>
+                        <% }); %>
                     </div>
                 </div>
         </div>

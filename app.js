@@ -6,6 +6,8 @@ var express = require("express"),
     localStrategy = require("passport-local"),
     config = require("./config"),
     users = require("./models/Users"),
+    reviews = require("./models/Reviews"),
+    business = require("./models/Businesses"),
     businesses = require("./models/Businesses"),
     reviews = require("./models/Reviews"),
     flash = require("connect-flash"),
@@ -96,74 +98,41 @@ app.get("/user/:username", function (req, res) {
             res.redirect("back");
             return;
         }
-
-        userObj = user[0]; //test
-        
-        //queries here 
-
-        // res.render("account", {user: userObj});
-        mongoose.connection.db.collection("reviews").find({ 'user_id': userObj.user_id }).toArray((err, documents) => {
-
-            documents.forEach(function (value) {
-
-                reviewText = value.text;
-
-                indico.personality(reviewText)
-                    .then(response)
-                    .then((personality) => {
-                        mongoose.connection.db.collection('users').update(
-                            { 'user_id': userObj.user_id },
-                            {
-                                $set: { 'personality': personality }
-                            }
-                        );
-
-                        reviewText = value.text;
-
-                    }
+        userObj = user[0]; 
+        reviews.find({user_id: userObj.user_id}, function(err, userReviews){ //should be a array len = 1
+            var reviewText = userReviews[0].text;
+            var userPersonality;
+            indico.personality(reviewText)
+                .then(response)
+                .then((personality) => {
+                    userPersonality = personality;
+                    mongoose.connection.db.collection('users').update(
+                        { 'user_id': userObj.user_id },
+                        {
+                            $set: { 'personality': personality }
+                        }
                     );
-
-                //getting the business data code 
-
-                //query to get personality type of current user 
-                mongoose.connection.db.collection("users").findOne({ 'user_id': userObj.user_id }, function (err, documents) {
-                    console.log("The personality of the current user is "+ documents.personality);
-
-                    //putting it in the var 
-                    userPersonality = documents.personality;
-
-                    //query to get user_ids of users with matching personalities to current user 
-                    mongoose.connection.db.collection("users").find({ 'personality': userPersonality }).toArray((err, documents) => {
-                        numOfSimUsers = documents.length; 
-
-
-                        //find review_ids of each userId
-                        documents.forEach(function (value) {
-
-                            mongoose.connection.db.collection("reviews").find({ 'user_id': value.user_id }).toArray((err, documents) => {
-                                usersReviews = documents; 
-                                documents.forEach(function (value) {
-
-                                    mongoose.connection.db.collection("businesses").find({ 'business_id': value.business_id }).toArray((err, documents) => {
-                                        businessList = documents; 
-
-                                        documents.forEach(function (value) {
-                                            console.log(value.name);
-                                        });
-                                    });
-
-                                });
-
-                            });
-
-                        });
-
-
+                }
+            );
+            users.find({personality: userPersonality}, function(err, usersList){
+                if(err) throw err;
+                var filtered = [];
+                for(var i in usersList){
+                    filtered.push(usersList[i].user_id);
+                }
+                reviews.find({user_id:{$in:filtered}}, function(err, relatedReviews){
+                    if(err) throw err;
+                    var filtered = [];
+                    for(var i in relatedReviews){
+                        filtered.push(relatedReviews[i].business_id);
+                    }
+                    businesses.find({business_id:{$in:filtered}}, function(err, suggestions){
+                        if(err) throw err;
+                        res.render("account", { user: userObj, reviews: userReviews, suggestions: suggestions});
                     });
                 });
-                res.render("account", { user: userObj });
             });
-        });        
+        });       
     });
 });
 app.post("/search", function (req, res) {

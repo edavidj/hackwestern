@@ -5,11 +5,15 @@
     margin-bottom: 2.0em !important;
 }
 body{
-    background-color: #f5e6e6;
+    background-color: #f5f0e6;
 }
 #userSearch{
     width:30%;
 }
 #headerForm{
     width:100%;
+    height:100%;
+}
+.ui.menu{
+    /* background-color: #e6975b; */
 }
