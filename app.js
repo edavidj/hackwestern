@@ -32,10 +32,11 @@ var response = function(res) {  // valueArray =[res.openness, res.extraversion, 
             };
 var logError = function(err) { console.log(err); }
 
-// single example
-indico.personality("The food in this restaurant sucks. I would never come back.")
-  .then(response)
-  .catch(logError);
+//declaring variables for queries 
+var userObj; 
+var userID; 
+var reviewText;
+
 
 mongoose.connect(config.db, {useMongoClient:true});
 
@@ -83,7 +84,26 @@ app.post("/search", function(req,res){
             console.log(err);
             return;
         }
-        res.render("account", {user: user[0]});
+
+        userObj = user[0]; 
+        //queries here 
+
+
+        mongoose.connection.db.collection("reviews").find({'user_id': userObj.user_id}).toArray((err, documents) => {
+    
+        documents.forEach(function(value){
+
+            console.log(value.text);
+            reviewText = value.text; 
+
+            indico.personality(reviewText)
+            .then(response)
+            .catch(logError);
+
+        });
+    }
+); 
+        res.render("account", {user: userObj});
     })
 });
 //======= USER ROUTES =========
