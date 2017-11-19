@@ -1,9 +1,10 @@
 <% include ./partials/header %>
-<div class="ui content-body text container">
-        <div class="ui huge header">Showing info for <em><%=user.name%></em></div>
+<div class="ui container" id="test">
+<div class="ui main content-body text container">
+        <div id="top-body" class="ui huge header">Welcome <em><%=user.name%></em></div>
         <div class="ui grid stackable two column">
                 <div class="column ten wide">
-                    <div class="ui header">Reviews</div>
+                    <div class="ui header">Recent Reviews</div>
                     <div class="ui segment divided items">
                         <% reviews.forEach(function(review){ %>
                         <div class="item">
@@ -35,5 +36,5 @@
                 </div>
         </div>
     </div>
-
+</div>
 <% include ./partials/footer %>

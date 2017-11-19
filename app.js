@@ -120,7 +120,6 @@ app.get("/user/:username", function (req, res) {
                 }
             );
             users.find({user_id: userObj.user_id}, function(err, fullObj){
-                console.log(fullObj[0].personality);
                 users.find({personality: fullObj[0].personality}, function(err, usersList){
                     if(err) throw err;
                     var filtered = [];
