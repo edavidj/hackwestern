@@ -146,7 +146,7 @@ app.get("/user/:username", function (req, res) {
 app.post("/search", function (req, res) {
     res.redirect("/user/" + req.body.username);
 });
-app.listen(3000, function (err) {
+app.listen(process.env.PORT, function (err) {
     if (err) throw err;
     console.log("Connected to server.");
 });
