@@ -21,7 +21,7 @@ var userID;
 var reviewText;
 var highest;
 var keys;
-var personality;
+personality = 'abc';
 var valueHash;
 
 var response = function(res) {  // valueArray =[res.openness, res.extraversion, res.agreeableness, res.conscientiousness]; 
@@ -29,8 +29,8 @@ var response = function(res) {  // valueArray =[res.openness, res.extraversion, 
                keys = Object.keys(valueHash).sort().reverse();
                for (var i = 0 in keys){
                   personality = keys[i];
-                  console.log(keys[i]);
-                  return;
+                  console.log(personality); 
+                  return personality;
                }
                     //personality = v;
                     //highest = valueHash[v];
@@ -100,21 +100,22 @@ app.post("/search", function(req,res){
 
             indico.personality(reviewText)
             .then(response)
-            .catch(logError);
+            .then((personality)=> {
+                console.log(personality + " this is inside chained promise");
+                mongoose.connection.db.collection('users').update(
+            {'user_id': userObj.user_id},
+            {
+                $set: {'personality': personality }
+            }
+        );
 
-            console.log(personality);
+            })
+            .catch(logError);
         });
 
         console.log(personality);
 
-         mongoose.connection.db.collection('users').update(
-  {'user_id': userObj.user_id},
-  {$set: 
-    {
-     'personality': personality
- }}
-);
-    }
+             }
 ); 
 
         
