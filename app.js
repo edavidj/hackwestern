@@ -16,20 +16,12 @@ var indico = require('indico.io');
 indico.apiKey =  '45f6807fe76a898415348e045a2d9c49';
 mongoose.connect(config.db, {useMongoClient:true});
 
-var highest;
-var keys;
-var personality;
-var valueHash;
-var response = function(res) {  // valueArray =[res.openness, res.extraversion, res.agreeableness, res.conscientiousness]; 
-               valueHash = {"openness": res.openness, "extraversion": res.extraversion, "agreeableness": res.agreeableness, "conscientiousness": res.conscientiousness};
-               keys = Object.keys(valueHash).sort().reverse().forEach(function(v,i){
-                    personality = v;
-                    highest = valueHash[v];
-                    console.log(personality);
-                    console.log(highest);
-                    return;
-               })
-            };
+var valueArray = [];
+var highest; 
+var response = function(res) { valueArray =[res.openness, res.extraversion, res.agreeableness, res.conscientiousness]; 
+               valueArray = valueArray.sort(); 
+               highest = valueArray[3];
+               console.log(highest); }
 var logError = function(err) { console.log(err); }
 
 //declaring variables for queries 
@@ -78,11 +70,26 @@ app.use(function(req,res,next){
 app.get("/", function(req,res){
     res.render("landing");
 });
+app.get("/search", function(req,res){
+    users.find({name: req.query.username}, function(err, user){
+        if(err || user[0] === undefined || user.length === 0){
+            console.log(err, "failed");
+            res.redirect("/");
+            return;
+        }
+        userObj = user[0];
+        console.log("success");
+        res.render("account", {user: userObj});
+    });
+});
+app.get("/account", function(req,res){
+    res.render("account");
+});
 app.post("/search", function(req,res){
     users.find({name: req.body.username}, function(err, user){
         if(err || user[0] === undefined || user.length === 0){
             console.log(err, "failed");
-            res.redirect("/"); //,messy
+            res.redirect("/");
             return;
         }
 
@@ -90,26 +97,22 @@ app.post("/search", function(req,res){
         //queries here 
         // console.log(user);
 
-        mongoose.connection.db.collection("reviews").find({'user_id': userObj.user_id}, function(err, reviews){
-            if(err || reviews.length ===0){
-                return;
-            }
-            reviews.toArray((err, documents) => {
-                
-                        documents.forEach(function(value){
-            
-                            console.log(value.text);
-                            reviewText = value.text; 
-            
-                            indico.personality(reviewText)
-                            .then(response)
-                            .catch(logError);
-            
-                            });
-                        });
-            res.render("account", {user: userObj});
-        });
-        
+        res.render("account", {user: userObj});
+        mongoose.connection.db.collection("reviews").find({'user_id': userObj.user_id}).toArray((err, documents) => {
+    
+        documents.forEach(function(value){
+
+            console.log(value.text);
+            reviewText = value.text; 
+
+            indico.personality(reviewText)
+            .then(response)
+            .catch(logError);
+
+            });
+        }
+    ); 
+        res.render("account", {user: userObj});
     })
 });
 //======= USER ROUTES =========
