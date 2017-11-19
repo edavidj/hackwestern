@@ -71,36 +71,38 @@ app.get("/", function(req,res){
     res.render("landing");
 });
 app.post("/search", function(req,res){
-    try{
     users.find({name: req.body.username}, function(err, user){
         if(err || user[0] === undefined || user.length === 0){
-            console.log(err);
-            res.redirect("/");
+            console.log(err, "failed");
+            res.redirect("/"); //,messy
+            return;
         }
 
         userObj = user[0]; //test
         //queries here 
+        // console.log(user);
 
-
-        mongoose.connection.db.collection("reviews").find({'user_id': userObj.user_id}).toArray((err, documents) => {
-    
-        documents.forEach(function(value){
-
-            console.log(value.text);
-            reviewText = value.text; 
-
-            indico.personality(reviewText)
-            .then(response)
-            .catch(logError);
-
-            });
-        }
-    ); 
-        res.render("account", {user: userObj});
+        mongoose.connection.db.collection("reviews").find({'user_id': userObj.user_id}, function(err, reviews){
+            if(err || reviews.length ===0){
+                return;
+            }
+            reviews.toArray((err, documents) => {
+                
+                        documents.forEach(function(value){
+            
+                            console.log(value.text);
+                            reviewText = value.text; 
+            
+                            indico.personality(reviewText)
+                            .then(response)
+                            .catch(logError);
+            
+                            });
+                        });
+            res.render("account", {user: userObj});
+        });
+        
     })
-    } catch(err){
-        res.redirect("/");
-    }
 });
 //======= USER ROUTES =========
 app.get("/user/:id", isLoggedIn, function(req,res){
@@ -115,7 +117,7 @@ function isLoggedIn(req,res,next){
     req.flash("error", "You need to be logged in to do that!");
     res.redirect("/login");
 }
-app.listen(process.env.PORT, function(err){
+app.listen(3000, function(err){
     if(err) throw err;
     console.log("Connected to server.");    
 });
