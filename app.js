@@ -134,10 +134,7 @@ app.get("/user/:username", function (req, res) {
                     businesses.find({business_id:{$in:filtered}}, function(err, suggestions){
                         if(err) throw err;
                         var filtered = [];
-                        for(var i in suggestions){
-                            filtered.push
-                        }
-                        console.log(suggestions);
+                        //doen't filter suggestions properly, same for everyone 
                         res.render("account", { user: userObj, reviews: userReviews, suggestions: suggestions});
                     });
                 });
@@ -147,7 +144,6 @@ app.get("/user/:username", function (req, res) {
     });
 });
 app.post("/search", function (req, res) {
-    console.log(req.body.username)
     res.redirect("/user/" + req.body.username);
 });
 app.listen(3000, function (err) {

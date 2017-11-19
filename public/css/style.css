@@ -14,6 +14,6 @@ body{
     width:100%;
     height:100%;
 }
-.ui.menu{
-    /* background-color: #e6975b; */
+#nav-container{
+    margin-left:10% !important;
 }
