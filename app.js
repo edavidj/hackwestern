@@ -70,48 +70,31 @@ app.use(function(req,res,next){
 app.get("/", function(req,res){
     res.render("landing");
 });
-app.get("/search", function(req,res){
-    users.find({name: req.query.username}, function(err, user){
-        if(err || user[0] === undefined || user.length === 0){
-            console.log(err, "failed");
-            res.redirect("/");
-            return;
-        }
-        userObj = user[0];
-        console.log("success");
-        res.render("account", {user: userObj});
-    });
-});
-app.get("/account", function(req,res){
-    res.render("account");
-});
 app.post("/search", function(req,res){
     users.find({name: req.body.username}, function(err, user){
+        console.log("Greeting");    
         if(err || user[0] === undefined || user.length === 0){
-            console.log(err, "failed");
-            res.redirect("/");
+            res.redirect("back");
             return;
         }
 
         userObj = user[0]; //test
         //queries here 
-        // console.log(user);
 
-        res.render("account", {user: userObj});
+        // res.render("account", {user: userObj});
         mongoose.connection.db.collection("reviews").find({'user_id': userObj.user_id}).toArray((err, documents) => {
-    
-        documents.forEach(function(value){
+            documents.forEach(function(value){
 
-            console.log(value.text);
-            reviewText = value.text; 
+                console.log(value.text);
+                reviewText = value.text; 
 
-            indico.personality(reviewText)
-            .then(response)
-            .catch(logError);
+                indico.personality(reviewText)
+                .then(response)
+                .catch(logError);
 
-            });
-        }
-    ); 
+                });
+            }
+        ); 
         res.render("account", {user: userObj});
     })
 });

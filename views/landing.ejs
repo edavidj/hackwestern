@@ -6,25 +6,26 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"></link>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.css" rel="stylesheet" type="text/css"/>
-        <link rel="stylesheet" type="text/css" href="/css/style.css">        
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
         <script
         src="https://code.jquery.com/jquery-3.1.1.min.js"
         integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
         crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.js"></script>
-      <script src="/js/main.js"></script>
     </head>
     <body> 
     <div class="container" id=landing-header>
         <h1>Welcome to EatMotion!</h1>
         <!-- <a class="ui button brown" href="/login">Log in</a>
         <a class="ui button brown" href="/register">Register</a> -->
-            <div class="ui form container">
+        <form action="/search" method="POST" class="ui form container" id="userSearch">
+            <div class="field">
                 <div class="ui icon input">
                     <input type="text" id="searchBar" name="username" placeholder="Enter a username...">
                     <i class="search icon"></i>
                 </div>                
-            </div>
+            </div>            
+        </form>
     </div>
     <ul class="slideshow">
       <li></li>
