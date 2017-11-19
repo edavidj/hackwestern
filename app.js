@@ -105,9 +105,20 @@ app.post("/search", function(req,res){
             console.log(personality);
         });
 
-        //console.log(personality);
+        console.log(personality);
+
+         mongoose.connection.db.collection('users').update(
+  {'user_id': userObj.user_id},
+  {$set: 
+    {
+     'personality': personality
+ }}
+);
     }
 ); 
+
+        
+
         res.render("account", {user: userObj});
     })
 });
