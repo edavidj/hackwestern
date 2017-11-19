@@ -16,27 +16,29 @@ var indico = require('indico.io');
 indico.apiKey =  '45f6807fe76a898415348e045a2d9c49';
 mongoose.connect(config.db, {useMongoClient:true});
 
+var userObj; 
+var userID; 
+var reviewText;
 var highest;
 var keys;
 var personality;
 var valueHash;
+
 var response = function(res) {  // valueArray =[res.openness, res.extraversion, res.agreeableness, res.conscientiousness]; 
                valueHash = {"openness": res.openness, "extraversion": res.extraversion, "agreeableness": res.agreeableness, "conscientiousness": res.conscientiousness};
-               keys = Object.keys(valueHash).sort().reverse().forEach(function(v,i){
-                    personality = v;
-                    highest = valueHash[v];
-                    console.log(personality);
-                    console.log(highest);
-                    return;
-               })
+               keys = Object.keys(valueHash).sort().reverse();
+               for (var i = 0 in keys){
+                  personality = keys[i];
+                  console.log(keys[i]);
+                  return;
+               }
+                    //personality = v;
+                    //highest = valueHash[v];
+                    //console.log(personality); 
+                   // return;
             };
+
 var logError = function(err) { console.log(err); }
-
-//declaring variables for queries 
-var userObj; 
-var userID; 
-var reviewText;
-
 
 mongoose.connect(config.db, {useMongoClient:true});
 
@@ -100,7 +102,10 @@ app.post("/search", function(req,res){
             .then(response)
             .catch(logError);
 
+            console.log(personality);
         });
+
+        //console.log(personality);
     }
 ); 
         res.render("account", {user: userObj});
