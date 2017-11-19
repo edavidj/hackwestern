@@ -43,11 +43,13 @@ var numOfSimUsers = 0;
 
 var response = function (res) {  
     valueHash = { "openness": res.openness, "extraversion": res.extraversion, "agreeableness": res.agreeableness, "conscientiousness": res.conscientiousness };
-    keys = Object.keys(valueHash).sort().reverse();
-    for (var i = 0 in keys) {
-        personality = keys[i];
-        return personality;
+    keys = Object.keys(valueHash);
+    var maxKey = "openness";
+    for (var i in keys) {
+        if(valueHash[keys[i]] > valueHash[maxKey])
+        maxKey = keys[i];
     }
+    return maxKey;
 };
 
 
@@ -120,6 +122,7 @@ app.get("/user/:username", function (req, res) {
                 }
             );
             users.find({user_id: userObj.user_id}, function(err, fullObj){
+                console.log(fullObj[0].personality);
                 users.find({personality: fullObj[0].personality}, function(err, usersList){
                     if(err) throw err;
                     var filtered = [];
