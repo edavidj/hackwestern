@@ -18,10 +18,11 @@ mongoose.connect(config.db, {useMongoClient:true});
 
 var userObj; 
 var userID; 
+userPersonality = "123"; 
 var reviewText;
 var highest;
 var keys;
-personality = 'abc';
+personality = "1234";
 var valueHash;
 
 var response = function(res) {  // valueArray =[res.openness, res.extraversion, res.agreeableness, res.conscientiousness]; 
@@ -29,7 +30,6 @@ var response = function(res) {  // valueArray =[res.openness, res.extraversion, 
                keys = Object.keys(valueHash).sort().reverse();
                for (var i = 0 in keys){
                   personality = keys[i];
-                  console.log(personality); 
                   return personality;
                }
                     //personality = v;
@@ -101,7 +101,6 @@ app.post("/search", function(req,res){
             indico.personality(reviewText)
             .then(response)
             .then((personality)=> {
-                console.log(personality + " this is inside chained promise");
                 mongoose.connection.db.collection('users').update(
             {'user_id': userObj.user_id},
             {
@@ -118,7 +117,34 @@ app.post("/search", function(req,res){
              }
 ); 
 
+        //getting the business data code 
+
+//query to get personality type of current user 
+ mongoose.connection.db.collection("users").findOne({'user_id': userObj.user_id}, function(err, documents){
+    console.log(documents.personality);
+
+    //putting it in the var 
+    userPersonality = documents.personality; 
+
+    //query to get user_ids of users with matching personalities to current user 
+  mongoose.connection.db.collection("users").find({'personality': userPersonality}).toArray((err, documents) => {
+    console.log(documents);
+    console.log(userPersonality);
+
+
+        //find review_ids of each userId
         
+        
+
+}
+); 
+}
+); 
+        
+
+
+
+
 
         res.render("account", {user: userObj});
     })
