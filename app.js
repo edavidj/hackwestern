@@ -119,26 +119,29 @@ app.get("/user/:username", function (req, res) {
                     );
                 }
             );
-            users.find({personality: userPersonality}, function(err, usersList){
-                if(err) throw err;
-                var filtered = [];
-                for(var i in usersList){
-                    filtered.push(usersList[i].user_id);
-                }
-                reviews.find({user_id:{$in:filtered}}, function(err, relatedReviews){
+            users.find({user_id: userObj.user_id}, function(err, fullObj){
+                let userPersonality = fullObj[0].personality;
+                users.find({personality: userPersonality}, function(err, usersList){
                     if(err) throw err;
                     var filtered = [];
-                    for(var i in relatedReviews){
-                        filtered.push(relatedReviews[i].business_id);
+                    for(var i in usersList){
+                        filtered.push(usersList[i].user_id);
                     }
-                    businesses.find({business_id:{$in:filtered}}, function(err, suggestions){
+                    reviews.find({user_id:{$in:filtered}}, function(err, relatedReviews){
                         if(err) throw err;
                         var filtered = [];
-                        //doen't filter suggestions properly, same for everyone 
-                        res.render("account", { user: userObj, reviews: userReviews, suggestions: suggestions});
+                        for(var i in relatedReviews){
+                            filtered.push(relatedReviews[i].business_id);
+                        }
+                        businesses.find({business_id:{$in:filtered}}, function(err, suggestions){
+                            if(err) throw err;
+                            var filtered = [];
+                            //doen't filter suggestions properly, same for everyone 
+                            res.render("account", { user: userObj, reviews: userReviews, suggestions: suggestions});
+                        });
                     });
                 });
-            });
+            });            
         });
             
     });
@@ -146,7 +149,7 @@ app.get("/user/:username", function (req, res) {
 app.post("/search", function (req, res) {
     res.redirect("/user/" + req.body.username);
 });
-app.listen(process.env.PORT, function (err) {
+app.listen(3000, function (err) {
     if (err) throw err;
     console.log("Connected to server.");
 });
