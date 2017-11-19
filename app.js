@@ -22,7 +22,7 @@ var response = function (res) {
     valueArray = [res.openness, res.extraversion, res.agreeableness, res.conscientiousness];
     valueArray = valueArray.sort();
     highest = valueArray[3];
-    console.log(highest);
+    console.log("The personality of the current user is " + highest);
 }
 var logError = function (err) { console.log(err); }
 
@@ -35,18 +35,17 @@ var highest;
 var keys;
 personality = "1234";
 var valueHash;
+var usersReviews;
+var businessList;
+var numOfSimUsers = 0; 
 
-var response = function (res) {  // valueArray =[res.openness, res.extraversion, res.agreeableness, res.conscientiousness]; 
+var response = function (res) {  
     valueHash = { "openness": res.openness, "extraversion": res.extraversion, "agreeableness": res.agreeableness, "conscientiousness": res.conscientiousness };
     keys = Object.keys(valueHash).sort().reverse();
     for (var i = 0 in keys) {
         personality = keys[i];
         return personality;
     }
-    //personality = v;
-    //highest = valueHash[v];
-    //console.log(personality); 
-    // return;
 };
 
 
@@ -99,6 +98,7 @@ app.get("/user/:username", function (req, res) {
         }
 
         userObj = user[0]; //test
+        
         //queries here 
 
         // res.render("account", {user: userObj});
@@ -106,7 +106,6 @@ app.get("/user/:username", function (req, res) {
 
             documents.forEach(function (value) {
 
-                console.log(value.text);
                 reviewText = value.text;
 
                 indico.personality(reviewText)
@@ -119,10 +118,7 @@ app.get("/user/:username", function (req, res) {
                             }
                         );
 
-                        console.log(value.text);
                         reviewText = value.text;
-
-                        console.log(personality);
 
                     }
                     );
@@ -131,29 +127,25 @@ app.get("/user/:username", function (req, res) {
 
                 //query to get personality type of current user 
                 mongoose.connection.db.collection("users").findOne({ 'user_id': userObj.user_id }, function (err, documents) {
-                    console.log(documents.personality);
+                    console.log("The personality of the current user is "+ documents.personality);
 
                     //putting it in the var 
                     userPersonality = documents.personality;
 
                     //query to get user_ids of users with matching personalities to current user 
                     mongoose.connection.db.collection("users").find({ 'personality': userPersonality }).toArray((err, documents) => {
-                        console.log(documents);
-                        console.log(userPersonality);
+                        numOfSimUsers = documents.length; 
 
 
                         //find review_ids of each userId
                         documents.forEach(function (value) {
-                            console.log(value.user_id);
-                            console.log(value.name);
 
                             mongoose.connection.db.collection("reviews").find({ 'user_id': value.user_id }).toArray((err, documents) => {
-
+                                usersReviews = documents; 
                                 documents.forEach(function (value) {
-                                    console.log(value.business_id);
-                                    console.log(value.text);
 
                                     mongoose.connection.db.collection("businesses").find({ 'business_id': value.business_id }).toArray((err, documents) => {
+                                        businessList = documents; 
 
                                         documents.forEach(function (value) {
                                             console.log(value.name);
